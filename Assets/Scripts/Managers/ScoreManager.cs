@@ -7,12 +7,11 @@ public class ScoreManager : MonoBehaviour
     public static int score;
 
 
-    Text text;
+    [SerializeField] Text text;
 
 
     void Awake ()
     {
-        text = GetComponent <Text> ();
         score = 0;
     }
 
