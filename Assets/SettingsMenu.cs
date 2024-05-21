@@ -57,12 +57,12 @@ public class SettingsMenu : MonoBehaviour
         // set BGM slider based on music volume
         float bgmVol = 0;
         masterMixer.GetFloat("musicVol", out bgmVol);
-        bgmSlider.value = bgmVol / bgmSlider.maxValue;
+        bgmSlider.value = bgmVol;// / bgmSlider.maxValue;
 
         // set SFX slider based on music volume
         float sfxVol = 0;
         masterMixer.GetFloat("sfxVol", out sfxVol);
-        sfxSlider.value = sfxVol / sfxSlider.maxValue;
+        sfxSlider.value = sfxVol;// / sfxSlider.maxValue;
     }
 
     public void FillResolutions()
@@ -93,6 +93,7 @@ public class SettingsMenu : MonoBehaviour
         currentResolution = allResolutions[index];
 
         Screen.SetResolution(currentResolution.x, currentResolution.y, fullscreenToggle.isOn);
+        Screen.fullScreen = fullscreenToggle.isOn;
     }
 
     public void UpdateSFXVolume(float val)
