@@ -20,34 +20,46 @@ public class SettingsMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // create list of resolutions
         allResolutions = new List<Resolution>();
-
         allResolutions.Add(new Resolution(640, 480));
         allResolutions.Add(new Resolution(1024, 1024));
         allResolutions.Add(new Resolution(1280, 720));
         allResolutions.Add(new Resolution(1366, 768));
         allResolutions.Add(new Resolution(1920, 1080));
 
+        // add resolutions to dropdown
         FillResolutions();
 
+        // update UI to reflect current settings
         RefreshUI();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void RefreshUI()
+    void RefreshUI() // changes UI elements to reflect current settings
     {
         // set resolution dropdown based on current resolution
-        currentResolution = new Resolution( Screen.width, Screen.height);
+        currentResolution = new Resolution(Screen.width, Screen.height);
 
-        var resIndex = allResolutions.IndexOf(currentResolution);
+        //Debug.Log("on refresh, resolution is: " + currentResolution.ToString());
+
+        int resIndex = -1;
+        foreach(Resolution r in allResolutions)
+        {
+            if (currentResolution.x == r.x && currentResolution.y == r.y)
+            {
+                resIndex = allResolutions.IndexOf(r);
+            }
+        }
+
         if (resIndex != -1)
         {
+            //Debug.Log("found res in the list. index = " + resIndex);
             resolutionDropdown.value = resIndex;
+        }
+        else
+        {
+            //Debug.Log("res not in list");
+            resolutionDropdown.value = 0;
         }
 
         // set fullscreen checkbox
@@ -57,15 +69,15 @@ public class SettingsMenu : MonoBehaviour
         // set BGM slider based on music volume
         float bgmVol = 0;
         masterMixer.GetFloat("musicVol", out bgmVol);
-        bgmSlider.value = bgmVol;// / bgmSlider.maxValue;
+        bgmSlider.value = bgmVol;
 
         // set SFX slider based on music volume
         float sfxVol = 0;
         masterMixer.GetFloat("sfxVol", out sfxVol);
-        sfxSlider.value = sfxVol;// / sfxSlider.maxValue;
+        sfxSlider.value = sfxVol;
     }
 
-    public void FillResolutions()
+    public void FillResolutions() // add all resolutions to dropdown list
     {
         List<string> resText = new List<string>();
 
@@ -75,11 +87,9 @@ public class SettingsMenu : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(resText);
-
-
     }
 
-    public void UpdateWindow()
+    public void UpdateWindow() // change screen resolution and fullscreen setting; called when values are changed in the menu
     {
         List<string> resText = new List<string>();
 
@@ -96,17 +106,17 @@ public class SettingsMenu : MonoBehaviour
         Screen.fullScreen = fullscreenToggle.isOn;
     }
 
-    public void UpdateSFXVolume(float val)
+    public void UpdateSFXVolume(float val) // change volume of sound effects, called when slider is adjusted
     {
         masterMixer.SetFloat("sfxVol", val);
     }
 
-    public void UpdateBGMVolume(float val)
+    public void UpdateBGMVolume(float val) // change volume of music, called when slider is adjusted
     {
         masterMixer.SetFloat("musicVol", val);
     }
 
-    public void Cancel()
+    public void Cancel() // cancel settings menu, called when back button is clicked
     {
         gameObject.SetActive(false);
     }

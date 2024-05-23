@@ -12,28 +12,22 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void ResumeGame()
+    public void ResumeGame() // called when resume button is clicked
     {
         SceneManager.UnloadSceneAsync("Pause");
     }
 
-    public void OpenSettings()
+    public void OpenSettings() // called when settings button is clicked
     {
         settingsMenu.SetActive(true);
     }
 
-    public void QuitGame()
+    public void QuitGame() // called when quit buttin is clicked
     {
         Application.Quit();
     }
 
-    private void OnDestroy()
+    private void OnDestroy() // called when unpaused
     {
         Time.timeScale = 1;
     }
